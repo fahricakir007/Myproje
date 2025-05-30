@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Top Yakalama Oyunu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+        
+        .game-area {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+            cursor: crosshair;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+        
+        .ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+        
+        .ball:hover {
+            transform: scale(1.2);
+        }
+        
+        .ball.clicked {
+            animation: explode 0.5s ease-out;
+        }
+        
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .controls button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .controls button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .controls button:active {
+            transform: translateY(0);
+        }
+        
+        .message {
+            margin: 15px 0;
+            font-size: 1.1em;
+            min-height: 25px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .combo {
+            color: #FFD700;
+            font-size: 1.5em;
+            animation: glow 1s ease-in-out;
+        }
+        
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 5px #FFD700; }
+            50% { text-shadow: 0 0 20px #FFD700, 0 0 30px #FFD700; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🎯 Top Yakalama Oyunu</h1>
+        
+        <div class="stats">
+            <div class="stat">
+                Puan: <span id="score">0</span>
+            </div>
+            <div class="stat">
+                Süre: <span id="time">30</span>s
+            </div>
+            <div class="stat">
+                Combo: <span id="combo">0</span>
+            </div>
+        </div>
+        
+        <div class="game-area" id="gameArea"></div>
+        
+        <div class="message" id="message">Topları yakala! Oyun 30 saniye sürer.</div>
+        
+        <div class="controls">
+            <button onclick="startGame()">🎮 Oyunu Başlat</button>
+            <button onclick="resetGame()">🔄 Yeniden Başla</button>
+        </div>
+    </div>
+
+    <script>
+        let gameActive = false;
+        let score = 0;
+        let timeLeft = 30;
+        let combo = 0;
+        let gameTimer;
+        let ballSpawnTimer;
+        let balls = [];
+        
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b', '#6c5ce7', '#a29bfe'];
+        
+        function getRandomColor() {
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        function createBall() {
+            if (!gameActive) return;
+            
+            const gameArea = document.getElementById('gameArea');
+            const ball = document.createElement('div');
+            ball.className = 'ball';
+            ball.style.backgroundColor = getRandomColor();
+            ball.style.left = Math.random() * (gameArea.offsetWidth - 50) + 'px';
+            ball.style.top = Math.random() * (gameArea.offsetHeight - 50) + 'px';
+            
+            ball.addEventListener('click', function() {
+                if (!gameActive) return;
+                
+                score += (combo >= 5) ? 20 : 10;
+                combo++;
+                
+                ball.classList.add('clicked');
+                setTimeout(() => ball.remove(), 500);
+                
+                updateDisplay();
+                
+                if (combo >= 5) {
+                    showMessage('🔥 COMBO! +20 puan!', 'combo');
+                } else if (combo >= 3) {
+                    showMessage('⚡ Güzel! +10 puan!');
+                }
+            });
+            
+            gameArea.appendChild(ball);
+            balls.push(ball);
+            
+            // Topu 3 saniye sonra otomatik kaldır
+            setTimeout(() => {
+                if (ball.parentNode && gameActive) {
+                    combo = 0; // Combo sıfırla
+                    ball.remove();
+                    updateDisplay();
+                    showMessage('😢 Kaçırdın! Combo sıfırlandı.');
+                }
+            }, 3000);
+        }
+        
+        function startGame() {
+            if (gameActive) return;
+            
+            gameActive = true;
+            score = 0;
+            timeLeft = 30;
+            combo = 0;
+            
+            clearInterval(gameTimer);
+            clearInterval(ballSpawnTimer);
+            
+            // Mevcut topları temizle
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = '';
+            balls = [];
+            
+            updateDisplay();
+            showMessage('🎯 Oyun başladı! Topları yakala!');
+            
+            // Süre sayacı
+            gameTimer = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+                
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+            
+            // Top oluşturma
+            ballSpawnTimer = setInterval(createBall, 800);
+            createBall(); // İlk topu hemen oluştur
+        }
+        
+        function endGame() {
+            gameActive = false;
+            clearInterval(gameTimer);
+            clearInterval(ballSpawnTimer);
+            
+            // Tüm topları temizle
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = '';
+            balls = [];
+            
+            let message = `🏆 Oyun bitti! Toplam puanın: ${score}`;
+            if (score >= 200) message += ' - Harika! 🌟';
+            else if (score >= 100) message += ' - İyi iş! 👏';
+            else message += ' - Tekrar dene! 💪';
+            
+            showMessage(message);
+        }
+        
+        function resetGame() {
+            gameActive = false;
+            score = 0;
+            timeLeft = 30;
+            combo = 0;
+            
+            clearInterval(gameTimer);
+            clearInterval(ballSpawnTimer);
+            
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = '';
+            balls = [];
+            
+            updateDisplay();
+            showMessage('Oyunu başlatmak için butona tıkla!');
+        }
+        
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('time').textContent = timeLeft;
+            document.getElementById('combo').textContent = combo;
+        }
+        
+        function showMessage(text, className = '') {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = text;
+            messageElement.className = 'message ' + className;
+        }
+        
+        // Oyunu başlat
+        resetGame();
+    </script>
+</body>
+</html>
