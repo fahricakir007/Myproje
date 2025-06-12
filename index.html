@@ -3,321 +3,540 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎯 Top Yakalama Oyunu</title>
+    <title>Mevduat Hesaplama - 2025 Güncel Veriler</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
-            background-size: 400% 400%;
-            animation: gradientShift 8s ease infinite;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
-            color: white;
+            color: #ffffff;
+            overflow-x: auto;
         }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        
-        .game-container {
-            background: rgba(255, 255, 255, 0.1);
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(0,0,0,0.4);
+            padding: 30px;
+            border-radius: 20px;
             backdrop-filter: blur(15px);
+            border: 2px solid rgba(52, 152, 219, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #3498db;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #ecf0f1;
+            font-weight: 300;
+        }
+
+        .calculator-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .input-panel {
+            background: rgba(0,0,0,0.5);
             border-radius: 20px;
             padding: 30px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(52, 152, 219, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .input-panel h2 {
+            color: #3498db;
+            font-size: 1.8em;
+            margin-bottom: 25px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            max-width: 500px;
-            width: 90%;
+            border-bottom: 3px solid #2980b9;
+            padding-bottom: 10px;
         }
-        
-        h1 {
-            margin-bottom: 20px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            animation: pulse 2s ease-in-out infinite alternate;
+
+        .input-group {
+            margin-bottom: 25px;
         }
-        
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #bdc3c7;
+            font-weight: 500;
+            font-size: 1.1em;
         }
-        
-        .game-area {
-            position: relative;
+
+        .input-group input {
             width: 100%;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            margin: 20px 0;
-            overflow: hidden;
-            cursor: crosshair;
-            border: 2px dashed rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            border: 2px solid #34495e;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
         }
-        
-        .ball {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.1s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: bounce 2s ease-in-out infinite;
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3498db;
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
         }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(180deg); }
-        }
-        
-        .ball:hover {
-            transform: scale(1.2);
-        }
-        
-        .ball.clicked {
-            animation: explode 0.5s ease-out;
-        }
-        
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        
-        .stat {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .controls button {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
-            color: white;
+
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
             border: none;
-            padding: 15px 30px;
-            margin: 10px;
-            border-radius: 25px;
-            font-size: 1em;
-            font-weight: bold;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 1.3em;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        
-        .controls button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+
+        .calculate-btn:hover {
+            background: linear-gradient(45deg, #2980b9, #1f618d);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
         }
-        
-        .controls button:active {
-            transform: translateY(0);
+
+        .results-panel {
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(52, 152, 219, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        
-        .message {
-            margin: 15px 0;
+
+        .results-panel h2 {
+            color: #3498db;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #2980b9;
+            padding-bottom: 10px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateX(5px);
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: #ecf0f1;
             font-size: 1.1em;
-            min-height: 25px;
+        }
+
+        .result-value {
+            font-weight: 700;
+            color: #3498db;
+            font-size: 1.2em;
+        }
+
+        .tax-breakdown {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid rgba(231, 76, 60, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .tax-breakdown h3 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.4em;
+        }
+
+        .tax-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .tax-item:last-child {
+            border-bottom: none;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            color: #e74c3c;
         }
-        
-        .combo {
-            color: #FFD700;
-            font-size: 1.5em;
-            animation: glow 1s ease-in-out;
+
+        .info-section {
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(52, 152, 219, 0.4);
         }
-        
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 5px #FFD700; }
-            50% { text-shadow: 0 0 20px #FFD700, 0 0 30px #FFD700; }
+
+        .info-section h3 {
+            color: #3498db;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        .info-card h4 {
+            color: #3498db;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-card li {
+            padding: 5px 0;
+            color: #bdc3c7;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .info-card li:before {
+            content: "▪";
+            color: #3498db;
+            margin-right: 8px;
+        }
+
+        .warning {
+            background: rgba(243, 156, 18, 0.1);
+            border: 2px solid rgba(243, 156, 18, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .warning h4 {
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+
+        .warning p {
+            color: #ecf0f1;
+            line-height: 1.6;
+        }
+
+        .designer-credit {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0,0,0,0.6);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .designer-credit p {
+            color: #3498db;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .designer-credit span {
+            color: #ecf0f1;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-panel, .results-panel {
+            animation: fadeInUp 0.6s ease-out;
         }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <h1>🎯 Top Yakalama Oyunu</h1>
-        
-        <div class="stats">
-            <div class="stat">
-                Puan: <span id="score">0</span>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Mevduat Hesaplama Merkezi</h1>
+            <p>2025 Güncel Vergi Oranları ile Detaylı Hesaplama</p>
+        </div>
+
+        <div class="calculator-section">
+            <div class="input-panel">
+                <h2>📊 Hesaplama Parametreleri</h2>
+                
+                <div class="input-group">
+                    <label for="principal">Anapara (TL)</label>
+                    <input type="text" id="principal" placeholder="Örn: 100.000" oninput="formatNumber(this)">
+                </div>
+
+                <div class="input-group">
+                    <label for="interestRate">Yıllık Faiz Oranı (%)</label>
+                    <input type="number" id="interestRate" placeholder="Örn: 45" step="0.1" min="0" max="100">
+                </div>
+
+                <div class="input-group">
+                    <label for="days">Vade (Gün)</label>
+                    <input type="number" id="days" placeholder="Örn: 365" min="1" max="3650">
+                </div>
+
+                <button class="calculate-btn" onclick="calculateDeposit()">Hesapla</button>
             </div>
-            <div class="stat">
-                Süre: <span id="time">30</span>s
-            </div>
-            <div class="stat">
-                Combo: <span id="combo">0</span>
+
+            <div class="results-panel">
+                <h2>💼 Hesaplama Sonuçları</h2>
+                
+                <div class="result-item">
+                    <span class="result-label">Anapara:</span>
+                    <span class="result-value" id="displayPrincipal">0,00 ₺</span>
+                </div>
+
+                <div class="result-item">
+                    <span class="result-label">Vade:</span>
+                    <span class="result-value" id="displayDays">0 Gün</span>
+                </div>
+
+                <div class="result-item">
+                    <span class="result-label">Brüt Faiz:</span>
+                    <span class="result-value" id="grossInterest">0,00 ₺</span>
+                </div>
+
+                <div class="result-item">
+                    <span class="result-label">Net Faiz:</span>
+                    <span class="result-value" id="netInterest">0,00 ₺</span>
+                </div>
+
+                <div class="result-item">
+                    <span class="result-label">Toplam Tutar:</span>
+                    <span class="result-value" id="totalAmount">0,00 ₺</span>
+                </div>
+
+                <div class="tax-breakdown" id="taxBreakdown">
+                    <h3>🏛️ Vergi Detayları</h3>
+                    <div class="tax-item">
+                        <span>Stopaj Oranı:</span>
+                        <span id="taxRate">-%</span>
+                    </div>
+                    <div class="tax-item">
+                        <span>Stopaj Tutarı:</span>
+                        <span id="taxAmount">0,00 ₺</span>
+                    </div>
+                    <div class="tax-item">
+                        <span>BSMV (% 5):</span>
+                        <span id="bsmvAmount">0,00 ₺</span>
+                    </div>
+                    <div class="tax-item">
+                        <span>Toplam Vergi:</span>
+                        <span id="totalTax">0,00 ₺</span>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="game-area" id="gameArea"></div>
-        
-        <div class="message" id="message">Topları yakala! Oyun 30 saniye sürer.</div>
-        
-        <div class="controls">
-            <button onclick="startGame()">🎮 Oyunu Başlat</button>
-            <button onclick="resetGame()">🔄 Yeniden Başla</button>
+
+        <div class="info-section">
+            <h3>📋 2025 Güncel Vergi Oranları ve Bilgiler</h3>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>TL Mevduat Stopaj Oranları</h4>
+                    <ul>
+                        <li>0-32 gün: %20</li>
+                        <li>33-92 gün: %15</li>
+                        <li>93-365 gün: %10</li>
+                        <li>365+ gün: %5</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h4>Özel Durumlar</h4>
+                    <ul>
+                        <li>Altın mevduat (6 aya kadar): %15</li>
+                        <li>Altın mevduat (1 yıla kadar): %12</li>
+                        <li>Döviz mevduat: %25</li>
+                        <li>Katılım bankası: Aynı oranlar</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h4>Ek Vergiler</h4>
+                    <ul>
+                        <li>BSMV: Stopaj üzerinden %5</li>
+                        <li>Damga vergisi: %0.948</li>
+                        <li>Sigorta primi: TMSF kapsamında</li>
+                        <li>Güvence tutarı: 950.000 TL</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h4>Hesaplama Formülü</h4>
+                    <ul>
+                        <li>Brüt Faiz = Ana × Oran × Gün ÷ 365</li>
+                        <li>Stopaj = Brüt Faiz × Stopaj Oranı</li>
+                        <li>BSMV = Stopaj × %5</li>
+                        <li>Net Faiz = Brüt - Stopaj - BSMV</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="warning">
+            <h4>⚠️ Önemli Uyarılar</h4>
+            <p>Bu hesaplama aracı genel bilgilendirme amaçlıdır. Gerçek vergi hesaplamaları bankanıza göre değişiklik gösterebilir. Yatırım kararları vermeden önce bankanızdan güncel bilgi alınması önerilir. Vergi oranları hükümet kararları ile değişebilir.</p>
+        </div>
+
+        <div class="designer-credit">
+            <p>💻 Tasarım: SLYMN0841</p>
+            <span>Profesyonel Mevduat Hesaplama Sistemi</span>
         </div>
     </div>
 
     <script>
-        let gameActive = false;
-        let score = 0;
-        let timeLeft = 30;
-        let combo = 0;
-        let gameTimer;
-        let ballSpawnTimer;
-        let balls = [];
-        
-        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#eb4d4b', '#6c5ce7', '#a29bfe'];
-        
-        function getRandomColor() {
-            return colors[Math.floor(Math.random() * colors.length)];
+        function formatNumber(input) {
+            // Sadece sayıları ve noktaları tut
+            let value = input.value.replace(/[^\d]/g, '');
+            
+            // Binlik ayraçlarını ekle
+            if (value) {
+                value = parseInt(value).toLocaleString('tr-TR');
+            }
+            
+            input.value = value;
         }
-        
-        function createBall() {
-            if (!gameActive) return;
-            
-            const gameArea = document.getElementById('gameArea');
-            const ball = document.createElement('div');
-            ball.className = 'ball';
-            ball.style.backgroundColor = getRandomColor();
-            ball.style.left = Math.random() * (gameArea.offsetWidth - 50) + 'px';
-            ball.style.top = Math.random() * (gameArea.offsetHeight - 50) + 'px';
-            
-            ball.addEventListener('click', function() {
-                if (!gameActive) return;
-                
-                score += (combo >= 5) ? 20 : 10;
-                combo++;
-                
-                ball.classList.add('clicked');
-                setTimeout(() => ball.remove(), 500);
-                
-                updateDisplay();
-                
-                if (combo >= 5) {
-                    showMessage('🔥 COMBO! +20 puan!', 'combo');
-                } else if (combo >= 3) {
-                    showMessage('⚡ Güzel! +10 puan!');
-                }
-            });
-            
-            gameArea.appendChild(ball);
-            balls.push(ball);
-            
-            // Topu 3 saniye sonra otomatik kaldır
-            setTimeout(() => {
-                if (ball.parentNode && gameActive) {
-                    combo = 0; // Combo sıfırla
-                    ball.remove();
-                    updateDisplay();
-                    showMessage('😢 Kaçırdın! Combo sıfırlandı.');
-                }
-            }, 3000);
+
+        function parseFormattedNumber(str) {
+            return parseFloat(str.replace(/\./g, '').replace(/,/g, '.')) || 0;
         }
-        
-        function startGame() {
-            if (gameActive) return;
-            
-            gameActive = true;
-            score = 0;
-            timeLeft = 30;
-            combo = 0;
-            
-            clearInterval(gameTimer);
-            clearInterval(ballSpawnTimer);
-            
-            // Mevcut topları temizle
-            const gameArea = document.getElementById('gameArea');
-            gameArea.innerHTML = '';
-            balls = [];
-            
-            updateDisplay();
-            showMessage('🎯 Oyun başladı! Topları yakala!');
-            
-            // Süre sayacı
-            gameTimer = setInterval(() => {
-                timeLeft--;
-                updateDisplay();
-                
-                if (timeLeft <= 0) {
-                    endGame();
-                }
-            }, 1000);
-            
-            // Top oluşturma
-            ballSpawnTimer = setInterval(createBall, 800);
-            createBall(); // İlk topu hemen oluştur
+
+        function formatCurrency(amount) {
+            return amount.toLocaleString('tr-TR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }) + ' ₺';
         }
-        
-        function endGame() {
-            gameActive = false;
-            clearInterval(gameTimer);
-            clearInterval(ballSpawnTimer);
-            
-            // Tüm topları temizle
-            const gameArea = document.getElementById('gameArea');
-            gameArea.innerHTML = '';
-            balls = [];
-            
-            let message = `🏆 Oyun bitti! Toplam puanın: ${score}`;
-            if (score >= 200) message += ' - Harika! 🌟';
-            else if (score >= 100) message += ' - İyi iş! 👏';
-            else message += ' - Tekrar dene! 💪';
-            
-            showMessage(message);
+
+        function getTaxRate(days) {
+            if (days <= 32) return 0.20;
+            else if (days <= 92) return 0.15;
+            else if (days <= 365) return 0.10;
+            else return 0.05;
         }
-        
-        function resetGame() {
-            gameActive = false;
-            score = 0;
-            timeLeft = 30;
-            combo = 0;
+
+        function calculateDeposit() {
+            // Input değerlerini al
+            const principalStr = document.getElementById('principal').value;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const days = parseInt(document.getElementById('days').value) || 0;
             
-            clearInterval(gameTimer);
-            clearInterval(ballSpawnTimer);
+            // Anaparayı parse et
+            const principal = parseFormattedNumber(principalStr);
             
-            const gameArea = document.getElementById('gameArea');
-            gameArea.innerHTML = '';
-            balls = [];
+            if (principal <= 0 || interestRate <= 0 || days <= 0) {
+                alert('Lütfen tüm alanları doğru şekilde doldurun!');
+                return;
+            }
+
+            // Hesaplamalar
+            const grossInterest = (principal * interestRate * days) / (100 * 365);
+            const taxRate = getTaxRate(days);
+            const stopajAmount = grossInterest * taxRate;
+            const bsmvAmount = stopajAmount * 0.05; // BSMV stopaj üzerinden %5
+            const totalTax = stopajAmount + bsmvAmount;
+            const netInterest = grossInterest - totalTax;
+            const totalAmount = principal + netInterest;
+
+            // Sonuçları göster
+            document.getElementById('displayPrincipal').textContent = formatCurrency(principal);
+            document.getElementById('displayDays').textContent = days + ' Gün';
+            document.getElementById('grossInterest').textContent = formatCurrency(grossInterest);
+            document.getElementById('netInterest').textContent = formatCurrency(netInterest);
+            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
             
-            updateDisplay();
-            showMessage('Oyunu başlatmak için butona tıkla!');
+            // Vergi detayları
+            document.getElementById('taxRate').textContent = (taxRate * 100).toFixed(1) + '%';
+            document.getElementById('taxAmount').textContent = formatCurrency(stopajAmount);
+            document.getElementById('bsmvAmount').textContent = formatCurrency(bsmvAmount);
+            document.getElementById('totalTax').textContent = formatCurrency(totalTax);
+
+            // Vergi tablosunu göster
+            document.getElementById('taxBreakdown').style.display = 'block';
         }
-        
-        function updateDisplay() {
-            document.getElementById('score').textContent = score;
-            document.getElementById('time').textContent = timeLeft;
-            document.getElementById('combo').textContent = combo;
-        }
-        
-        function showMessage(text, className = '') {
-            const messageElement = document.getElementById('message');
-            messageElement.textContent = text;
-            messageElement.className = 'message ' + className;
-        }
-        
-        // Oyunu başlat
-        resetGame();
+
+        // Sayfa yüklendiğinde örnek değerler
+        window.onload = function() {
+            document.getElementById('principal').value = '100.000';
+            document.getElementById('interestRate').value = '45';
+            document.getElementById('days').value = '365';
+        };
     </script>
 </body>
 </html>
